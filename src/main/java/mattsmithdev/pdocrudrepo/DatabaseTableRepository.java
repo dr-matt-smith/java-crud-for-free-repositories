@@ -231,10 +231,14 @@ public abstract class DatabaseTableRepository
         return entityObjects(clazz, objects);
     }
 
-
-    public <T> T find(Class<T> clazz, int id) throws Exception
+    public <T> T find(Class<T> clazz, int id)
     {
-        T object = clazz.getDeclaredConstructor().newInstance();
+        T object = null;
+        try {
+            object = clazz.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            System.out.println("ERROR: unable to create new object for provided class: " + clazz);
+        }
 
         DatabaseManager dataBaseManager = new DatabaseManager(silent);
         Connection connection = dataBaseManager.getDbh();
